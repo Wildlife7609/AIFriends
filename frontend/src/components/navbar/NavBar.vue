@@ -1,51 +1,151 @@
 <script setup>
+import { ref, onMounted } from 'vue'
 import Menu from './icons/Menu.vue'
+import Home from './icons/Homepage.vue'
+import Friends from './icons/Friends.vue'
+import Create from './icons/Create.vue'
+import UserProfile from './icons/UserProfile.vue'
+import UserSpace from './icons/UserSpace.vue'
+import UserLogout from './icons/UserLogout.vue'
+import Search from './icons/Search.vue'
+
+// Gorgeous DaisyUI themes
+const themes = [
+    'light',
+    'dark',
+    'cupcake',
+    'synthwave',
+    'retro',
+    'cyberpunk',
+    'valentine',
+    'forest',
+    'aqua',
+    'nord',
+    'sunset',
+    'dim',
+    'dracula',
+    'luxury'
+]
+
+const currentTheme = ref(localStorage.getItem('theme') || 'light')
+
+const changeTheme = (theme) => {
+    currentTheme.value = theme
+    localStorage.setItem('theme', theme)
+    document.documentElement.setAttribute('data-theme', theme)
+}
+
+onMounted(() => {
+    document.documentElement.setAttribute('data-theme', currentTheme.value)
+})
 </script>
 
 <template>
-<div class="drawer lg:drawer-open">
-  <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-  <div class="drawer-content">
-    <!-- Navbar -->
-    <nav class="navbar w-full bg-base-100 border-b border-base-300 shadow-md px-4">
-      <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-square btn-ghost">
-        <!-- Sidebar toggle icon -->
-        <Menu />
-      </label>
-       <div class="px-4 font-bold text-2xl">AIFriends</div>
-     </nav>
-     <!-- Page content here -->
-     <slot></slot>
-   </div>
- 
-   <div class="drawer-side is-drawer-close:overflow-visible">
-     <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
-     <div class="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
-       <!-- Sidebar content here -->
-       <ul class="menu w-full grow">
-         <!-- List item -->
-         <li>
-           <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
-             <!-- Home icon -->
-             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="my-1.5 inline-block size-6"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-             <span class="is-drawer-close:hidden">Homepage</span>
-           </button>
-         </li>
- 
-         <!-- List item -->
-         <li>
-           <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
-             <!-- Settings icon -->
-             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="my-1.5 inline-block size-6"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
-             <span class="is-drawer-close:hidden">Settings</span>
-           </button>
-         </li>
-       </ul>
-     </div>
-   </div>
- </div>
+    <div class="drawer lg:drawer-open">
+        <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col min-h-screen">
+            <!-- Navbar -->
+            <nav
+                class="navbar sticky top-0 z-45 w-full bg-base-100/80 backdrop-blur-md border-b border-base-300 shadow-sm px-4 transition-all duration-300">
+                <div class="navbar-start">
+                    <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-square btn-ghost">
+                        <!-- Sidebar toggle icon -->
+                        <Menu />
+                    </label>
+                    <div
+                        class="px-2 font-black text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-tight">
+                        AIFriends</div>
+                </div>
+                <div class="navbar-center w-4/5 max-w-180">
+                    <div class="join w-4/5">
+                        <input
+                            class="input input-bordered input-secondary join-item w-full rounded-l-full gap-0 focus:outline-none focus:border-secondary transition-all"
+                            placeholder="Search friends or posts..." />
+                        <button
+                            class="btn btn-secondary join-item rounded-r-full hover:scale-[1.02] active:scale-[0.98] transition-all">
+                            <Search />
+                            Search
+                        </button>
+                    </div>
+                </div>
+
+                <div class="navbar-end gap-1">
+                    <!-- Dynamic Theme Selector -->
+                    <div class="dropdown dropdown-end">
+                        <div tabindex="0" role="button" class="btn btn-square btn-ghost tooltip tooltip-bottom"
+                            data-tip="Change Theme">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+                                stroke="currentColor" class="size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M10.9 10.9l.006-.006a3.75 3.75 0 1 1-5.303-5.303L12 12M15.293 15.293l4.607 4.607a1 1 0 0 0 1.414-1.414l-4.607-4.607m-1.414 1.414a2.25 2.25 0 1 1 3.182-3.182l-3.182 3.182Z" />
+                            </svg>
+                        </div>
+                        <ul tabindex="0"
+                            class="dropdown-content menu bg-base-200 rounded-box z-50 w-52 p-2 shadow-2xl max-h-80 overflow-y-auto border border-base-300">
+                            <li v-for="t in themes" :key="t">
+                                <button :class="{ 'bg-primary text-primary-content': currentTheme === t }"
+                                    @click="changeTheme(t)" class="capitalize justify-between">
+                                    {{ t }}
+                                    <span v-if="currentTheme === t" class="text-xs">✓</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom" data-tip="Profile">
+                        <UserProfile class="size-6 text-base-content" />
+                    </button>
+                    <button class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom" data-tip="Space">
+                        <UserSpace class="size-6 text-base-content" />
+                    </button>
+                    <button class="btn btn-square btn-ghost hover:text-error transition-colors tooltip tooltip-bottom" data-tip="Logout">
+                        <UserLogout class="size-6 text-base-content" />
+                    </button>
+                </div>
+            </nav>
+            <!-- Page content here -->
+            <div class="grow">
+                <slot></slot>
+            </div>
+        </div>
+
+        <div class="drawer-side is-drawer-close:overflow-visible z-50">
+            <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
+            <div
+                class="flex min-h-full flex-col items-start bg-base-200 border-r border-base-300 is-drawer-close:w-14 is-drawer-open:w-64 transition-all duration-300">
+                <!-- Sidebar content here -->
+                <ul class="menu w-full grow p-2 gap-1">
+                    <!-- List item -->
+                    <li>
+                        <button
+                            class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3 rounded-xl hover:bg-primary hover:text-primary-content transition-all duration-200"
+                            data-tip="Homepage">
+                            <Home />
+                            <span class="is-drawer-close:hidden text-base font-medium whitespace-nowrap">Homepage</span>
+                        </button>
+                    </li>
+
+                    <li>
+                        <button
+                            class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3 rounded-xl hover:bg-primary hover:text-primary-content transition-all duration-200"
+                            data-tip="Friends">
+                            <Friends />
+                            <span class="is-drawer-close:hidden text-base font-medium whitespace-nowrap">Friends</span>
+                        </button>
+                    </li>
+
+                    <li>
+                        <button
+                            class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3 rounded-xl hover:bg-primary hover:text-primary-content transition-all duration-200"
+                            data-tip="Create">
+                            <Create />
+                            <span class="is-drawer-close:hidden text-base font-medium whitespace-nowrap">Create</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
