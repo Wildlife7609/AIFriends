@@ -4,3 +4,8 @@ __pycache__/
 *.pyc
 db.sqlit3
 .DS_Store
+*.py[cod]
+.idea/
+media/
+staticfiles/
+static/
