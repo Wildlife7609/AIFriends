@@ -56,8 +56,8 @@ onMounted(() => {
                         class="px-2 font-black text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-tight">
                         AIFriends</div>
                 </div>
-                <div class="navbar-center w-4/5 max-w-180">
-                    <div class="join w-4/5">
+                <div class="navbar-center w-4/5 max-w-180 flex justify-center">
+                    <div class="join w-4/5 flex justify-center items-center">
                         <input
                             class="input input-bordered input-secondary join-item w-full rounded-l-full gap-0 focus:outline-none focus:border-secondary transition-all"
                             placeholder="Search friends or posts..." />
@@ -92,13 +92,16 @@ onMounted(() => {
                         </ul>
                     </div>
 
-                    <button class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom" data-tip="Profile">
+                    <button class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom"
+                        data-tip="Profile">
                         <UserProfile class="size-6 text-base-content" />
                     </button>
-                    <button class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom" data-tip="Space">
+                    <button class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom"
+                        data-tip="Space">
                         <UserSpace class="size-6 text-base-content" />
                     </button>
-                    <button class="btn btn-square btn-ghost hover:text-error transition-colors tooltip tooltip-bottom" data-tip="Logout">
+                    <button class="btn btn-square btn-ghost hover:text-error transition-colors tooltip tooltip-bottom"
+                        data-tip="Logout">
                         <UserLogout class="size-6 text-base-content" />
                     </button>
                 </div>
