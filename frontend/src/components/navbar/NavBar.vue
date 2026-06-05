@@ -94,18 +94,18 @@ onMounted(() => {
 
                     <RouterLink :to="{ name: 'profile' }"
                         class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom"
-                        data-tip="Profile">
-                        <UserProfile class="size-6 text-base-content" />
+                        exact-active-class="btn-active text-primary" data-tip="Profile">
+                        <UserProfile class="size-6" />
                     </RouterLink>
                     <RouterLink :to="{ name: 'user-space', params: { user_id: '1' } }"
                         class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom"
-                        data-tip="Space">
-                        <UserSpace class="size-6 text-base-content" />
+                        exact-active-class="btn-active text-primary" data-tip="Space">
+                        <UserSpace class="size-6" />
                     </RouterLink>
                     <RouterLink :to="{ name: 'login' }"
                         class="btn btn-square btn-ghost hover:text-error transition-colors tooltip tooltip-bottom"
-                        data-tip="Logout">
-                        <UserLogout class="size-6 text-base-content" />
+                        exact-active-class="btn-active text-error" data-tip="Logout">
+                        <UserLogout class="size-6" />
                     </RouterLink>
                 </div>
             </nav>
@@ -125,7 +125,7 @@ onMounted(() => {
                     <li>
                         <RouterLink :to="{ name: 'homepage' }"
                             class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3 rounded-xl hover:bg-primary hover:text-primary-content transition-all duration-200"
-                            data-tip="Homepage">
+                            active-class="bg-base-300 text-base-content font-bold" data-tip="Homepage">
                             <Home />
                             <span class="is-drawer-close:hidden text-base font-medium whitespace-nowrap">Homepage</span>
                         </RouterLink>
@@ -134,7 +134,7 @@ onMounted(() => {
                     <li>
                         <RouterLink :to="{ name: 'friend' }"
                             class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3 rounded-xl hover:bg-primary hover:text-primary-content transition-all duration-200"
-                            data-tip="Friends">
+                            active-class="bg-base-300 text-base-content font-bold" data-tip="Friends">
                             <Friends />
                             <span class="is-drawer-close:hidden text-base font-medium whitespace-nowrap">Friends</span>
                         </RouterLink>
@@ -143,7 +143,7 @@ onMounted(() => {
                     <li>
                         <RouterLink :to="{ name: 'create' }"
                             class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3 rounded-xl hover:bg-primary hover:text-primary-content transition-all duration-200"
-                            data-tip="Create">
+                            active-class="bg-base-300 text-base-content font-bold" data-tip="Create">
                             <Create />
                             <span class="is-drawer-close:hidden text-base font-medium whitespace-nowrap">Create</span>
                         </RouterLink>
