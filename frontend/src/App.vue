@@ -3,9 +3,9 @@ import NavBar from './components/navbar/NavBar.vue'
 </script>
 
 <template>
-  <NavBar>页面内容区域</NavBar>
+  <NavBar>
+    <router-view></router-view>
+  </NavBar>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

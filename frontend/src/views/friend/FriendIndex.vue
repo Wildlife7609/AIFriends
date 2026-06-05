@@ -3,7 +3,7 @@
 </script>
 
 <template>
-
+    friend
 </template>
 
 <style scoped></style>
