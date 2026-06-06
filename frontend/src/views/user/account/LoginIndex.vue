@@ -60,14 +60,16 @@ function handleLogin() {
 
             <!-- Actions -->
             <div class="login-actions">
-                <button class="btn btn-primary btn-action" @click="handleLogin">Login</button>
-                <RouterLink :to="{ name: 'register' }" class="btn btn-outline btn-primary btn-action">
-                    Register
-                </RouterLink>
+                <button class="btn btn-primary w-full" @click="handleLogin">Login</button>
             </div>
 
             <!-- Divider hint -->
-            <p class="login-hint">New here? Register to create your account.</p>
+            <div class="login-footer">
+                <span class="login-hint">New here?</span>
+                <RouterLink :to="{ name: 'register' }" class="btn btn-outline btn-primary btn-sm">
+                    Register
+                </RouterLink>
+            </div>
         </div>
     </div>
 </template>
@@ -189,20 +191,19 @@ function handleLogin() {
 
 /* ── Actions ── */
 .login-actions {
-    display: flex;
-    gap: 0.75rem;
     margin-top: 1.25rem;
 }
 
-/* Action buttons — flex:1 so both take equal width */
-.btn-action {
-    flex: 1;
+/* ── Bottom footer row ── */
+.login-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.1rem;
 }
 
 /* ── Bottom hint ── */
 .login-hint {
-    margin-top: 1.1rem;
-    text-align: center;
     font-size: 0.8rem;
     color: oklch(var(--bc) / 0.4);
 }
