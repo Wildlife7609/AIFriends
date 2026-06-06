@@ -27,7 +27,7 @@ function handleLogin() {
 
             <!-- Header -->
             <div class="login-header">
-                <div class="login-logo">AI<span>Friends</span></div>
+                <div class="login-logo bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">AI<span>Friends</span></div>
                 <div class="login-divider">
                     <span class="login-subtitle">Sign in to continue</span>
                 </div>
@@ -60,8 +60,8 @@ function handleLogin() {
 
             <!-- Actions -->
             <div class="login-actions">
-                <button class="btn-login" @click="handleLogin">Login</button>
-                <RouterLink :to="{ name: 'register' }" class="btn-register">
+                <button class="btn btn-primary btn-action" @click="handleLogin">Login</button>
+                <RouterLink :to="{ name: 'register' }" class="btn btn-outline btn-primary btn-action">
                     Register
                 </RouterLink>
             </div>
@@ -110,10 +110,6 @@ function handleLogin() {
     font-size: 2rem;
     font-weight: 900;
     letter-spacing: -0.04em;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 .login-logo span { font-weight: 400; }
@@ -198,44 +194,10 @@ function handleLogin() {
     margin-top: 1.25rem;
 }
 
-/* Primary login button */
-.btn-login {
+/* Action buttons — flex:1 so both take equal width */
+.btn-action {
     flex: 1;
-    padding: 0.7rem 0;
-    border-radius: 0.75rem;
-    border: 2px solid #4338ca;
-    font-weight: 700;
-    font-size: 0.95rem;
-    cursor: pointer;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #ffffff;
-    transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
 }
-
-.btn-login:hover  { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(99, 102, 241, 0.5); }
-.btn-login:active { transform: scale(0.97); box-shadow: none; }
-
-/* Ghost register button */
-.btn-register {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.7rem 0;
-    border-radius: 0.75rem;
-    border: 2px solid #6366f1;
-    font-weight: 700;
-    font-size: 0.95rem;
-    cursor: pointer;
-    color: #6366f1;
-    background: #ffffff;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.15s;
-}
-
-.btn-register:hover  { background: #eef2ff; transform: translateY(-1px); }
-.btn-register:active { transform: scale(0.97); }
 
 /* ── Bottom hint ── */
 .login-hint {

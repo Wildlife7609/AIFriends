@@ -25,8 +25,6 @@ const themes = [
     'dark',
     'cupcake',
     'synthwave',
-    'retro',
-    'cyberpunk',
     'valentine',
     'forest',
     'aqua',
@@ -34,7 +32,6 @@ const themes = [
     'sunset',
     'dim',
     'dracula',
-    'luxury'
 ]
 
 const currentTheme = ref(localStorage.getItem('theme') || 'light')
