@@ -10,14 +10,10 @@ import UserProfile from './icons/UserProfile.vue'
 import UserSpace from './icons/UserSpace.vue'
 import UserLogout from './icons/UserLogout.vue'
 import Search from './icons/Search.vue'
+import UserMenu from './UserMenu.vue'
 
 const user = useUserStore()
 const router = useRouter()
-
-function logout() {
-    user.logout()
-    router.push({ name: 'login' })
-}
 
 // Gorgeous DaisyUI themes
 const themes = [
@@ -109,21 +105,13 @@ onMounted(() => {
 
                     <!-- Show user action buttons when logged in -->
                     <template v-else>
-                        <RouterLink :to="{ name: 'profile' }"
-                            class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom"
-                            exact-active-class="btn-active text-primary" data-tip="Profile">
-                            <UserProfile class="size-6" />
+                        <RouterLink :to="{ name: 'create' }"
+                            class="btn btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom mr-2"
+                            data-tip="Create Post" exact-active-class="btn-active text-primary">
+                            <Create />
+                            <span class="font-semibold">Create</span>
                         </RouterLink>
-                        <RouterLink :to="{ name: 'user-space', params: { user_id: user.id } }"
-                            class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom"
-                            exact-active-class="btn-active text-primary" data-tip="Space">
-                            <UserSpace class="size-6" />
-                        </RouterLink>
-                        <button
-                            class="btn btn-square btn-ghost hover:text-error transition-colors tooltip tooltip-bottom"
-                            data-tip="Logout" @click="logout">
-                            <UserLogout class="size-6" />
-                        </button>
+                        <UserMenu></UserMenu>
                     </template>
                 </div>
             </nav>
