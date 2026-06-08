@@ -11,8 +11,13 @@ from rest_framework.permissions import AllowAny
 class LoginView(APIView):
     def post(self, request, *arg, **kwargs):
         try:
-            username = request.data.get('username').strip()
-            password = request.data.get('password').strip()
+            username = request.data.get('username')
+            password = request.data.get('password')
+            if not username or not password:
+                return Response({'result': False, 'msg': 'username or password is null.'})
+            
+            username = username.strip()
+            password = password.strip()
             if not username or not password:
                 return Response({'result': False, 'msg': 'username or password is null.'})
             user = authenticate(username=username, password=password)
