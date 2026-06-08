@@ -3,33 +3,32 @@ import { ref } from "vue"
 
 export const useUserStore = defineStore('user', () => {
     const id = ref(0)
-    const username = ref("")
-    const photo = ref("")
-    const profile = ref("")
-    const accessToken = ref("")
+    const username = ref('')
+    const photo = ref('')
+    const profile = ref('')
+    const accessToken = ref('')
 
     function isLogin() {
-        return !!accessToken.value
+        return !!accessToken.value // 必须带value
     }
 
     function setAccessToken(token) {
-        if (typeof token !== "string" || token.length === 0) return
         accessToken.value = token
     }
 
     function setUserInfo(data) {
         id.value = data.user_id
         username.value = data.username
-        photo.value = data.photo_url
+        photo.value = data.photo
         profile.value = data.profile
     }
 
     function logout() {
         id.value = 0
-        username.value = ""
-        photo.value = ""
-        profile.value = ""
-        accessToken.value = ""
+        username.value = ''
+        photo.value = ''
+        profile.value = ''
+        accessToken.value = ''
     }
 
     return {
@@ -37,9 +36,9 @@ export const useUserStore = defineStore('user', () => {
         username,
         photo,
         profile,
-        accessToken,
-        isLogin,
+        accessToken, // 必须返回，否则无法在组件中获取accessToken的值
         setAccessToken,
+        isLogin,
         setUserInfo,
         logout,
     }
