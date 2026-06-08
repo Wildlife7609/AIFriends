@@ -2,25 +2,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from web.models.user import UserProfile
-from django.contrib.auth import authenticate
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from rest_framework.permissions import AllowAny
-
 
 class RegisterView(APIView):
     def post(self, request):
         try:
-            username = request.data.get('username')
-            password = request.data.get('password')
+            username = request.data.get('username').strip()
+            password = request.data.get('password').strip()
             if not username or not password:
                 return Response({'result': False, 'msg': 'username or password is null.'})
-            
-            username = username.strip()
-            password = password.strip()
-            if not username or not password:
-                return Response({'result': False, 'msg': 'username or password is null.'})
-
             if User.objects.filter(username=username).exists():
                 return Response({'result': False, 'msg': 'username is already exists.'})
 
@@ -34,8 +24,8 @@ class RegisterView(APIView):
                 'data': {
                     'access_token': str(refresh_token.access_token),
                     'user_id': user.id,
-                    'username': user.get_username(),
-                    'photo': user_profile.photo.url if user_profile.photo else '',
+                    'username': user.username,
+                    'photo': user_profile.photo.url,
                     'profile': user_profile.profile,
                 }
             })
