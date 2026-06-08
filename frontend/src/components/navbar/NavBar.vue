@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 import Menu from './icons/Menu.vue'
 import Home from './icons/Homepage.vue'
 import Friends from './icons/Friends.vue'
@@ -11,11 +11,11 @@ import UserSpace from './icons/UserSpace.vue'
 import UserLogout from './icons/UserLogout.vue'
 import Search from './icons/Search.vue'
 
+const user = useUserStore()
 const router = useRouter()
-const authStore = useAuthStore()
 
 function logout() {
-    authStore.logout()
+    user.logout()
     router.push({ name: 'login' })
 }
 
@@ -100,7 +100,7 @@ onMounted(() => {
                     </div>
 
                     <!-- Show Login button when not logged in -->
-                    <template v-if="!authStore.isLoggedIn">
+                    <template v-if="!user.isLogin()">
                         <RouterLink :to="{ name: 'login' }"
                             class="btn btn-primary rounded-full px-5 font-semibold hover:scale-[1.03] active:scale-[0.97] transition-all duration-200">
                             Login
@@ -114,7 +114,7 @@ onMounted(() => {
                             exact-active-class="btn-active text-primary" data-tip="Profile">
                             <UserProfile class="size-6" />
                         </RouterLink>
-                        <RouterLink :to="{ name: 'user-space', params: { user_id: '1' } }"
+                        <RouterLink :to="{ name: 'user-space', params: { user_id: user.id } }"
                             class="btn btn-square btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom"
                             exact-active-class="btn-active text-primary" data-tip="Space">
                             <UserSpace class="size-6" />
