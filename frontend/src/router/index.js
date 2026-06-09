@@ -19,7 +19,7 @@ import { useUserStore } from '@/stores/user'
 
 router.beforeEach((to, from, next) => {
   const user = useUserStore()
-  if (to.meta.requiresAuth && !user.isLogin()) {
+  if (to.meta.requiresAuth && user.hasPulledUserInfo && !user.isLogin()) {
     next({ name: 'login' })
   } else {
     next()
