@@ -1,15 +1,34 @@
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import UserSpaceIcon from './icons/UserSpace.vue'
 import UserProfileIcon from './icons/UserProfile.vue'
 import UserLogoutIcon from './icons/UserLogout.vue'
+import api from "@/js/http/api.js"
 const user = useUserStore()
+const router = useRouter()
+const errorMessage = ref('')
 
 const closeMenu = () => {
     const element = document.activeElement
     if (element && element instanceof HTMLElement) element.blur()
 }
 
+async function handleLogout() {
+    try {
+        const res = await api.post('/api/user/account/logout/')
+        const data = res.data
+        if (data.result === true) {
+            user.logout()
+            await router.push({ name: 'homepage' })
+        } else {
+            errorMessage.value = data.msg
+        }
+    } catch (error) {
+        errorMessage.value = error.message
+    }
+}
 
 </script>
 
@@ -56,7 +75,7 @@ const closeMenu = () => {
             </li>
             <div class="divider my-1 px-2 opacity-50"></div>
             <li class="mb-1">
-                <a @click="user.logout(); closeMenu()"
+                <a @click="handleLogout()"
                     class="group text-base font-medium py-3 px-3 flex items-center gap-4 text-error hover:bg-error/10 hover:text-error rounded-xl transition-colors">
                     <UserLogoutIcon class="w-[22px] h-[22px] opacity-80 group-hover:opacity-100 transition-opacity" />
                     Logout
