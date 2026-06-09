@@ -17,8 +17,8 @@ class GetUserInfoView(APIView):
                 'data': {
                     'user_id': request.user.id,
                     'username': request.user.username,
-                    'photo': request.user.photo.url,
-                    'profile': request.user.profile,
+                    'photo': user_profile.photo.url,
+                    'profile': user_profile.profile,
                 }
             })
         except Exception as e:

@@ -1,3 +1,4 @@
+from django.urls import re_path
 from django.urls import path
 from web.views.index import index
 from web.views.user.account.login import LoginView
@@ -13,4 +14,5 @@ urlpatterns = [
     path('api/user/account/refresh_token/', RefreshTokenView.as_view(), name='user_account_token_refresh'),
     path('api/user/account/get_user_info/', GetUserInfoView.as_view(), name='user_account_get_user_info'),
     path('', index, name='index'),
+    re_path(r'^(?!media/|static/|assets/).*$', index)
 ]
