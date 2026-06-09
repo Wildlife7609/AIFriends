@@ -43,7 +43,7 @@ async function handleLogout() {
             </div>
         </div>
         <ul tabindex="-1"
-            class="dropdown-content menu bg-base-100/95 backdrop-blur-xl rounded-2xl z-1 w-64 p-2 shadow-2xl mt-4 border border-base-200/50">
+            class="dropdown-content menu bg-base-100/95 backdrop-blur-xl rounded-2xl z-1 w-60 p-2 shadow-2xl mt-4 border border-base-200/50">
             <li class="mb-2">
                 <RouterLink @click="closeMenu" :to="{ name: 'user-space', params: { user_id: user.id } }"
                     class="flex items-center gap-3 py-3 px-3 hover:bg-base-200/50 rounded-xl transition-all">
@@ -53,7 +53,8 @@ async function handleLogout() {
                         </div>
                     </div>
                     <div class="flex flex-col justify-center">
-                        <span class="text-lg font-bold line-clamp-1 leading-tight">{{ user.username }}</span>
+                        <span class="text-lg font-bold line-clamp-1 break-all leading-tight">{{
+                            user.username }}</span>
                         <span class="text-xs text-primary font-medium mt-1">{{ user.id }}</span>
                     </div>
                 </RouterLink>
