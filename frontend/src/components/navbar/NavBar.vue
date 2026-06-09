@@ -96,7 +96,7 @@ onMounted(() => {
                     </div>
 
                     <!-- Show Login button when not logged in -->
-                    <template v-if="!user.isLogin()">
+                    <template v-if="user.hasPulledUserInfo && !user.isLogin()">
                         <RouterLink :to="{ name: 'login' }"
                             class="btn btn-primary rounded-full px-5 font-semibold hover:scale-[1.03] active:scale-[0.97] transition-all duration-200">
                             Login
@@ -104,7 +104,7 @@ onMounted(() => {
                     </template>
 
                     <!-- Show user action buttons when logged in -->
-                    <template v-else>
+                    <template v-else-if="user.isLogin()">
                         <RouterLink :to="{ name: 'create' }"
                             class="btn btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom mr-2"
                             data-tip="Create Post" exact-active-class="btn-active text-primary">

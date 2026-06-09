@@ -13,7 +13,7 @@ onMounted(async () => {
     try {
         const res = await api.get('/api/user/account/get_user_info/')
         const data = res.data
-        if (data.result === 'true') {
+        if (data.result === true) {
             user.setUserInfo(data.data)
         }
     } catch (error) {
