@@ -95,8 +95,13 @@ onMounted(() => {
                         </ul>
                     </div>
 
+                    <!-- Show skeleton while pulling user info -->
+                    <template v-if="!user.hasPulledUserInfo">
+                        <div class="skeleton w-10 h-10 rounded-full shrink-0 mr-2"></div>
+                    </template>
+
                     <!-- Show Login button when not logged in -->
-                    <template v-if="user.hasPulledUserInfo && !user.isLogin()">
+                    <template v-else-if="!user.isLogin()">
                         <RouterLink :to="{ name: 'login' }"
                             class="btn btn-primary rounded-full px-5 font-semibold hover:scale-[1.03] active:scale-[0.97] transition-all duration-200">
                             Login
