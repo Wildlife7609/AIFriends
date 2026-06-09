@@ -41,6 +41,4 @@ class LoginView(APIView):
                 return response
             return Response({'result': False, 'msg': 'Invalid username or password.'})
         except Exception as e:
-            import traceback
-            print(traceback.format_exc())
             return Response({'result': False, 'msg': str(e)})

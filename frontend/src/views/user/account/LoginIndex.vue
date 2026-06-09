@@ -70,7 +70,7 @@ async function handleLogin() {
                 </div>
 
                 <!-- Error from backend -->
-                <div class="min-h-[1.25rem]">
+                <div class="min-h-[1.25rem] text-red-500">
                     <p v-if="errorMessage" class="login-error m-0">{{ errorMessage }}</p>
                 </div>
 
