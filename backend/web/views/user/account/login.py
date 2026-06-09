@@ -16,7 +16,7 @@ class LoginView(APIView):
             
             user = authenticate(username=username, password=password)
             if user:
-                user_profile = UserProfile.objects.get(username=username)
+                user_profile = UserProfile.objects.get(user=user)
                 refresh = RefreshToken.for_user(user) # generate access token and refresh token
                 response = Response({
                     'result': True,
@@ -41,4 +41,6 @@ class LoginView(APIView):
                 return response
             return Response({'result': False, 'msg': 'Invalid username or password.'})
         except Exception as e:
+            import traceback
+            print(traceback.format_exc())
             return Response({'result': False, 'msg': str(e)})

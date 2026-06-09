@@ -27,8 +27,8 @@ async function handleLogin() {
             })
             const data = res.data
             if (data.result === true) {
-                user.setAccessToken(data.access_token)
-                user.setUserInfo(data)
+                user.setAccessToken(data.data.access_token)
+                user.setUserInfo(data.data)
                 await router.push({ name: 'homepage' })
 
             } else {
@@ -70,7 +70,9 @@ async function handleLogin() {
                 </div>
 
                 <!-- Error from backend -->
-                <p v-if="errorMessage" class="login-error">{{ errorMessage }}</p>
+                <div class="min-h-[1.25rem]">
+                    <p v-if="errorMessage" class="login-error m-0">{{ errorMessage }}</p>
+                </div>
 
                 <button type="submit" class="btn btn-primary w-full">Login</button>
             </form>
