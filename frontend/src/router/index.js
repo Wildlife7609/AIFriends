@@ -17,12 +17,10 @@ const router = createRouter({
 
 import { useUserStore } from '@/stores/user'
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const user = useUserStore()
   if (to.meta.requiresAuth && user.hasPulledUserInfo && !user.isLogin()) {
-    next({ name: 'login' })
-  } else {
-    next()
+    return { name: 'login' }
   }
 });
 

@@ -1,14 +1,27 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, useTemplateRef } from 'vue'
 import Camera from '@/components/navbar/icons/Camera.vue'
 
 const props = defineProps(['photo'])
+const emit = defineEmits(['updatePhotoFile'])
+
 const myPhoto = ref(props.photo)
+const fileInput = useTemplateRef('fileInput')
 
 watch(() => props.photo, newPhoto => {
     myPhoto.value = newPhoto
 })
 
+const handleFileChange = (event) => {
+    const file = event.target.files[0]
+    if (file) {
+        // Create a temporary URL to immediately preview the photo
+        myPhoto.value = URL.createObjectURL(file)
+
+        // Pass the actual file object up to the parent to be uploaded later
+        emit('updatePhotoFile', file)
+    }
+}
 </script>
 
 <template>
@@ -23,22 +36,23 @@ watch(() => props.photo, newPhoto => {
             <div class="relative group">
                 <div class="avatar">
                     <!-- Premium ring, shadow, and hover effect -->
-                    <div
+                    <div @click="fileInput.click()"
                         class="w-36 rounded-full ring-4 ring-primary/20 ring-offset-base-100 ring-offset-4 shadow-xl group-hover:ring-primary/50 transition-shadow transition-transform duration-300 cursor-pointer overflow-hidden">
                         <img :src="myPhoto" alt="Avatar" class="w-full h-full object-cover" />
                     </div>
                 </div>
                 <!-- Camera Badge -->
-                <div
+                <div @click="fileInput.click()"
                     class="absolute bottom-1 right-2 bg-primary rounded-full p-2 shadow-lg shadow-primary/40 cursor-pointer hover:scale-110 hover:bg-primary-focus transition-transform transition-shadow z-10 flex items-center justify-center">
                     <Camera class="!w-5 !h-5" />
                 </div>
             </div>
 
-            <button
+            <button @click="fileInput.click()"
                 class="btn btn-outline btn-primary rounded-full px-8 shadow-sm hover:shadow-primary/30 hover:shadow-lg hover:scale-[1.02] transition-transform transition-shadow duration-300">
                 Upload New
             </button>
+            <input ref="fileInput" type="file" class="hidden" accept="image/*" @change="handleFileChange" />
         </div>
     </div>
 </template>

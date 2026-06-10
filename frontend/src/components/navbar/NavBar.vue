@@ -116,7 +116,7 @@ onMounted(() => {
                     <!-- Show user action buttons when logged in -->
                     <template v-else-if="user.isLogin()">
                         <RouterLink :to="{ name: 'create' }"
-                            class="btn btn-ghost hover:text-primary transition-colors tooltip tooltip-bottom mr-2"
+                            class="btn btn-ghost hover:text-primary transition-transform tooltip tooltip-bottom mr-2"
                             data-tip="Create Post" exact-active-class="btn-active text-primary">
                             <Create />
                             <span class="font-semibold">Create</span>
