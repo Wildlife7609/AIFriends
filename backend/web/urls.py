@@ -5,6 +5,7 @@ from web.views.user.account.register import RegisterView
 from web.views.user.account.logout import LogoutView
 from web.views.user.account.refresh_token import RefreshTokenView
 from web.views.user.account.get_user_info import GetUserInfoView
+from web.views.user.profile.update import UpdateProfileView
 
 urlpatterns = [
     path('api/user/account/login/', LoginView.as_view(), name='user_account_login'),
@@ -12,6 +13,7 @@ urlpatterns = [
     path('api/user/account/logout/', LogoutView.as_view(), name='user_account_logout'),
     path('api/user/account/refresh_token/', RefreshTokenView.as_view(), name='user_account_token_refresh'),
     path('api/user/account/get_user_info/', GetUserInfoView.as_view(), name='user_account_get_user_info'),
+    path('api/user/profile/update/', UpdateProfileView.as_view(), name='user_profile_update'),
     path('', index, name='index'),
     re_path(r'^(?!media/|static/|assets/).*$', index)
 ]
