@@ -2,7 +2,7 @@
 venv/
 __pycache__/
 *.pyc
-db.sqlit3
+db.sqlite3
 .DS_Store
 *.py[cod]
 .idea/
