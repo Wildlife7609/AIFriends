@@ -8,6 +8,9 @@ watch(() => props.username, newUsername => {
     myUsername.value = newUsername
 })
 
+defineExpose({
+    username: myUsername
+})
 </script>
 
 <template>

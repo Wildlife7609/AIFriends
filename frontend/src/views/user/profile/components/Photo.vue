@@ -9,6 +9,7 @@ const emit = defineEmits(['updatePhotoFile'])
 const myPhoto = ref(props.photo)
 const fileInput = useTemplateRef('fileInput')
 const cropModal = useTemplateRef('cropModal')
+const uploadFile = ref(null)
 
 watch(() => props.photo, newPhoto => {
     myPhoto.value = newPhoto
@@ -31,9 +32,14 @@ const onCrop = (croppedBase64) => {
         .then(res => res.blob())
         .then(blob => {
             const file = new File([blob], 'avatar.png', { type: 'image/png' })
+            uploadFile.value = file
             emit('updatePhotoFile', file)
         })
 }
+
+defineExpose({
+    getUploadFile: () => uploadFile.value
+})
 </script>
 
 <template>

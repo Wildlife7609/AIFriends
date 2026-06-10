@@ -17,7 +17,8 @@ onMounted(async () => {
             user.setUserInfo(data.data)
         }
     } catch (error) {
-        console.log(error)
+        // 如果获取用户信息失败（比如未登录/Token过期），在此忽略报错，
+        // 统一在 finally 里面处理拦截和跳转逻辑。
     } finally {
         user.setHasPulledUserInfo(true)
         if (route.meta.requiresAuth && !user.isLogin()) {

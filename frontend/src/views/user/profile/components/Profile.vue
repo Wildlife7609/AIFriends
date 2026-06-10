@@ -7,6 +7,10 @@ const myProfile = ref(props.profile)
 watch(() => props.profile, newProfile => {
     myProfile.value = newProfile
 })
+
+defineExpose({
+    profile: myProfile
+})
 </script>
 
 <template>
