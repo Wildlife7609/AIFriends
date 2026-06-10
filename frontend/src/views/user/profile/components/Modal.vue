@@ -11,7 +11,7 @@ let croppieInstance = null
 
 const showModal = (url) => {
     dialog.value.showModal()
-    
+
     setTimeout(() => {
         if (!croppieInstance) {
             croppieInstance = new Croppie(croppieElement.value, {
@@ -46,27 +46,34 @@ defineExpose({ showModal, closeModal })
 </script>
 
 <template>
-    <dialog ref="dialog" class="modal modal-bottom sm:modal-middle backdrop-blur-sm transition-all duration-300" @close="closeModal">
-        <div class="modal-box flex flex-col items-center max-w-md bg-base-100 shadow-2xl shadow-primary/10 border border-base-200">
+    <dialog ref="dialog" class="modal modal-bottom sm:modal-middle backdrop-blur-sm transition-all duration-300"
+        @close="closeModal">
+        <div
+            class="modal-box transition-none flex flex-col items-center max-w-md bg-base-100 shadow-2xl shadow-primary/10 border border-base-200">
             <!-- Header -->
             <div class="w-full pb-4 mb-2 border-b border-base-200">
-                <h3 class="font-extrabold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary text-left">
+                <h3
+                    class="font-extrabold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary text-left">
                     Adjust Photo
                 </h3>
                 <p class="text-sm text-base-content/60 mt-1 text-left">Drag and zoom to frame your perfect avatar</p>
             </div>
-            
+
             <!-- Cropper Container -->
-            <div class="w-full flex justify-center py-6 bg-gradient-to-b from-base-200/50 to-base-200/20 rounded-2xl ring-1 ring-base-content/5 shadow-inner mt-4">
+            <div
+                class="w-full flex justify-center py-6 bg-gradient-to-b from-base-200/50 to-base-200/20 rounded-2xl ring-1 ring-base-content/5 shadow-inner mt-4">
                 <div ref="croppieElement"></div>
             </div>
-            
+
             <!-- Actions -->
             <div class="modal-action w-full flex justify-end gap-3 mt-8">
-                <button type="button" class="btn btn-ghost hover:bg-base-200/60 rounded-full transition-colors" @click="closeModal">
+                <button type="button" class="btn btn-ghost hover:bg-base-200/60 rounded-full transition-colors"
+                    @click="closeModal">
                     Cancel
                 </button>
-                <button type="button" class="btn btn-primary px-8 rounded-full shadow-lg shadow-primary/30 hover:scale-[1.02] hover:shadow-xl transition-all duration-300" @click="handleCrop">
+                <button type="button"
+                    class="btn btn-primary px-8 rounded-full shadow-lg shadow-primary/30 hover:scale-[1.02] hover:shadow-xl transition-all duration-300"
+                    @click="handleCrop">
                     Apply Changes
                 </button>
             </div>
@@ -86,7 +93,7 @@ defineExpose({ showModal, closeModal })
 
 :deep(.cr-boundary) {
     border-radius: 1rem;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
 }
 
 /* Slider Wrapper */
