@@ -97,7 +97,12 @@ onMounted(() => {
 
                     <!-- Show skeleton while pulling user info -->
                     <template v-if="!user.hasPulledUserInfo">
-                        <div class="skeleton w-10 h-10 rounded-full shrink-0 mr-2"></div>
+                        <div class="flex items-center">
+                            <!-- Skeleton for Create button -->
+                            <div class="skeleton w-24 h-10 rounded-xl shrink-0 mr-4"></div>
+                            <!-- Skeleton for Avatar -->
+                            <div class="skeleton w-10 h-10 rounded-full shrink-0 mr-2"></div>
+                        </div>
                     </template>
 
                     <!-- Show Login button when not logged in -->

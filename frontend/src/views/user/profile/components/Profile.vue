@@ -21,7 +21,7 @@ watch(() => props.profile, newProfile => {
             </span>
         </div>
         <textarea v-model="myProfile" maxlength="500"
-            class="textarea textarea-bordered textarea-primary w-full h-32 bg-base-100/50 focus:bg-base-100 shadow-sm focus:shadow-md transition-all leading-relaxed resize-none"></textarea>
+            class="textarea textarea-bordered textarea-primary w-full h-32 bg-base-100/50 focus:bg-base-100 shadow-sm focus:shadow-md transition-shadow leading-relaxed resize-none"></textarea>
     </div>
 </template>
 

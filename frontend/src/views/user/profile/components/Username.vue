@@ -16,7 +16,7 @@ watch(() => props.username, newUsername => {
             <span class="label-text font-semibold text-base-content/80">Username</span>
         </label>
         <input v-model="myUsername" type="text" placeholder="Enter your username"
-            class="input input-bordered input-primary w-full bg-base-100/50 focus:bg-base-100 transition-colors shadow-sm focus:shadow-md" />
+            class="input input-bordered input-primary w-full bg-base-100/50 focus:bg-base-100 transition-shadow shadow-sm focus:shadow-md" />
     </div>
 </template>
 
