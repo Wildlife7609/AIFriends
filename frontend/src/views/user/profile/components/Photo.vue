@@ -1,12 +1,14 @@
 <script setup>
 import { ref, watch, useTemplateRef } from 'vue'
 import Camera from '@/components/navbar/icons/Camera.vue'
+import Modal from './Modal.vue'
 
 const props = defineProps(['photo'])
 const emit = defineEmits(['updatePhotoFile'])
 
 const myPhoto = ref(props.photo)
 const fileInput = useTemplateRef('fileInput')
+const cropModal = useTemplateRef('cropModal')
 
 watch(() => props.photo, newPhoto => {
     myPhoto.value = newPhoto
@@ -14,13 +16,23 @@ watch(() => props.photo, newPhoto => {
 
 const handleFileChange = (event) => {
     const file = event.target.files[0]
-    if (file) {
-        // Create a temporary URL to immediately preview the photo
-        myPhoto.value = URL.createObjectURL(file)
-
-        // Pass the actual file object up to the parent to be uploaded later
-        emit('updatePhotoFile', file)
+    event.target.value = ''
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (e) => {
+        cropModal.value.showModal(e.target.result)
     }
+    reader.readAsDataURL(file)
+}
+
+const onCrop = (croppedBase64) => {
+    myPhoto.value = croppedBase64
+    fetch(croppedBase64)
+        .then(res => res.blob())
+        .then(blob => {
+            const file = new File([blob], 'avatar.png', { type: 'image/png' })
+            emit('updatePhotoFile', file)
+        })
 }
 </script>
 
@@ -53,6 +65,8 @@ const handleFileChange = (event) => {
                 Upload New
             </button>
             <input ref="fileInput" type="file" class="hidden" accept="image/*" @change="handleFileChange" />
+
+            <Modal ref="cropModal" @crop="onCrop" />
         </div>
     </div>
 </template>
