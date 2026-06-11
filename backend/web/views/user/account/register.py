@@ -16,7 +16,7 @@ class RegisterView(APIView):
 
             # 创建用户
             user = User.objects.create_user(username=username, password=password)
-            user_profile = UserProfile.objects.create(user=user)
+            user_profile = UserProfile.objects.get(user=user)
             refresh_token = RefreshToken.for_user(user) 
             response = Response({
                 'result': True,

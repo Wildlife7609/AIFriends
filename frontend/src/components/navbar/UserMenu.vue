@@ -26,6 +26,8 @@ async function handleLogout() {
             errorMessage.value = data.msg
         }
     } catch (error) {
+        user.logout()
+        router.push({ name: 'homepage' }).catch(() => { })
         errorMessage.value = error.message
     }
 }
