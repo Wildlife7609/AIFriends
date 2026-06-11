@@ -16,7 +16,7 @@ class UserProfile(models.Model):
 
     # Extra profile fields not in User
     photo = models.ImageField(default='user/photos/default.png', upload_to=photo_upload_path)
-    profile = models.TextField(default='thanks for interesting in my profile!', max_length=500)
+    profile = models.TextField(default='Thanks for interesting in my profile!', max_length=500)
     create_time = models.DateTimeField(default=now)
     update_time = models.DateTimeField(default=now)
 
