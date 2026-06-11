@@ -51,7 +51,7 @@ onMounted(() => {
             <nav
                 class="navbar sticky top-0 z-45 w-full bg-base-100/80 backdrop-blur-md border-b border-base-300 shadow-sm px-4 transition-all duration-300">
                 <div class="navbar-start">
-                    <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-square btn-ghost">
+                    <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-circle btn-ghost">
                         <!-- Sidebar toggle icon -->
                         <Menu />
                     </label>
@@ -75,7 +75,7 @@ onMounted(() => {
                 <div class="navbar-end gap-1">
                     <!-- Dynamic Theme Selector -->
                     <div class="dropdown dropdown-end">
-                        <div tabindex="0" role="button" class="btn btn-square btn-ghost tooltip tooltip-bottom"
+                        <div tabindex="0" role="button" class="btn btn-circle btn-ghost tooltip tooltip-bottom"
                             data-tip="Change Theme">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
                                 stroke="currentColor" class="size-5">
@@ -116,7 +116,7 @@ onMounted(() => {
                     <!-- Show user action buttons when logged in -->
                     <template v-else-if="user.isLogin()">
                         <RouterLink :to="{ name: 'create' }"
-                            class="btn btn-ghost hover:text-primary transition-transform tooltip tooltip-bottom mr-2"
+                            class="btn btn-ghost rounded-full hover:text-primary transition-transform tooltip tooltip-bottom mr-2"
                             data-tip="Create Post" exact-active-class="btn-active text-primary">
                             <Create />
                             <span class="font-semibold">Create</span>
