@@ -1,6 +1,6 @@
 <script setup>
 import Username from './components/Username.vue';
-import Photo from './components/Photo.vue';
+import Photo from '@/components/photo/Photo.vue';
 import Profile from './components/Profile.vue';
 import { useUserStore } from '@/stores/user'
 import api from '@/js/http/api.js'
