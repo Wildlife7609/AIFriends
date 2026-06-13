@@ -5,7 +5,8 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'homepage', component: () => import('@/views/homepage/HomepageIndex.vue'), meta: { requiresAuth: false } },
     { path: '/friend', name: 'friend', component: () => import('@/views/friend/FriendIndex.vue'), meta: { requiresAuth: true } },
-    { path: '/create', name: 'create', component: () => import('@/views/create/CreateIndex.vue'), meta: { requiresAuth: true } },
+    { path: '/create', name: 'create', component: () => import('@/views/create/character/CreateCharacter.vue'), meta: { requiresAuth: true } },
+    { path: '/update', name: 'update', component: () => import('@/views/create/character/UpdateCharacter.vue'), meta: { requiresAuth: true } },
     { path: '/profile', name: 'profile', component: () => import('@/views/user/profile/ProfileIndex.vue'), meta: { requiresAuth: true } },
     { path: '/login', name: 'login', component: () => import('@/views/user/account/LoginIndex.vue'), meta: { requiresAuth: false } },
     { path: '/register', name: 'register', component: () => import('@/views/user/account/RegisterIndex.vue'), meta: { requiresAuth: false } },

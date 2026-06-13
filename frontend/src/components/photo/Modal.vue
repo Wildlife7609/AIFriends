@@ -3,6 +3,14 @@ import { ref, useTemplateRef } from 'vue'
 import Croppie from 'croppie'
 import 'croppie/croppie.css'
 
+const props = defineProps({
+    viewportType: { type: String, default: 'circle' },
+    viewportWidth: { type: Number, default: 250 },
+    viewportHeight: { type: Number, default: 250 },
+    boundaryWidth: { type: Number, default: 300 },
+    boundaryHeight: { type: Number, default: 300 },
+})
+
 const emit = defineEmits(['crop'])
 
 const dialog = useTemplateRef('dialog')
@@ -15,8 +23,8 @@ const showModal = (url) => {
     setTimeout(() => {
         if (!croppieInstance) {
             croppieInstance = new Croppie(croppieElement.value, {
-                viewport: { width: 250, height: 250, type: 'circle' },
-                boundary: { width: 300, height: 300 },
+                viewport: { width: props.viewportWidth, height: props.viewportHeight, type: props.viewportType },
+                boundary: { width: props.boundaryWidth, height: props.boundaryHeight },
                 showZoomer: true,
                 enableOrientation: true
             })
@@ -35,7 +43,8 @@ const closeModal = () => {
 
 const handleCrop = () => {
     if (croppieInstance) {
-        croppieInstance.result({ type: 'base64', size: 'viewport', format: 'png', circle: false }).then((result) => {
+        const isCircle = props.viewportType === 'circle'
+        croppieInstance.result({ type: 'base64', size: 'viewport', format: 'png', circle: isCircle }).then((result) => {
             emit('crop', result)
             closeModal()
         })

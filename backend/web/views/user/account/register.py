@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 class RegisterView(APIView):
     def post(self, request):
         try:
-            username = request.data.get('username').strip()
-            password = request.data.get('password').strip()
+            username = request.data.get('username', '').strip()
+            password = request.data.get('password', '').strip()
             if not username or not password:
                 return Response({'result': False, 'msg': 'username or password is null.'})
             if User.objects.filter(username=username).exists():
