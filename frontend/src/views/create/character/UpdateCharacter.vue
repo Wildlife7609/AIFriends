@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, useTemplateRef } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import api from '@/js/http/api.js'
 
 import Photo from '@/components/photo/Photo.vue'
@@ -14,6 +14,7 @@ import VoiceId from './components/VoiceId.vue'
 import IsPublic from './components/IsPublic.vue'
 
 const router = useRouter()
+const route = useRoute()
 
 // Refs to grab data from child components
 const photoRef = useTemplateRef('photoRef')
@@ -33,7 +34,7 @@ const showSuccessToast = ref(false)
 const showErrorToast = ref(false)
 const toastMessage = ref('')
 
-const characterId = ref(1) // Hardcoded for testing
+const characterId = ref(route.params.character_id)
 
 // Initial Photo/Bg state for binding
 const initialPhoto = ref(null)
@@ -52,6 +53,11 @@ const showToast = (msg, isSuccess = true) => {
 }
 
 onMounted(async () => {
+    if (!characterId.value) {
+        router.push('/404')
+        return
+    }
+    
     try {
         const res = await api.get(`/api/create/character/get_single/?character_id=${characterId.value}`)
         const data = res.data
@@ -73,9 +79,11 @@ onMounted(async () => {
             if (bgRef.value) bgRef.value.previewUrl = charData.background_image
         } else {
             showToast(data.msg || 'Failed to fetch character', false)
+            setTimeout(() => router.push('/404'), 1500)
         }
     } catch (error) {
         showToast(error.message || 'An error occurred fetching character', false)
+        setTimeout(() => router.push('/404'), 1500)
     } finally {
         isFetching.value = false
     }
@@ -145,14 +153,14 @@ const submitCharacter = async () => {
 <template>
     <div class="flex justify-center items-start min-h-screen p-4 sm:p-6 bg-base-200/30 pb-24">
         <!-- Skeleton loader while fetching data -->
-        <div v-if="isFetching" class="flex flex-col gap-4 w-full max-w-5xl mt-8">
+        <div v-show="isFetching" class="flex flex-col gap-4 w-full max-w-5xl mt-8">
             <div class="skeleton h-32 w-full"></div>
             <div class="skeleton h-4 w-28"></div>
             <div class="skeleton h-4 w-full"></div>
             <div class="skeleton h-4 w-full"></div>
         </div>
 
-        <div v-else class="card bg-base-100 shadow-2xl shadow-base-300/50 w-full max-w-5xl border border-base-200/60 mt-4 sm:mt-8 transition-shadow">
+        <div v-show="!isFetching" class="card bg-base-100 shadow-2xl shadow-base-300/50 w-full max-w-5xl border border-base-200/60 mt-4 sm:mt-8 transition-shadow">
             
             <div class="card-body p-6 sm:p-10">
                 <div class="border-b border-base-200 pb-4 mb-8">

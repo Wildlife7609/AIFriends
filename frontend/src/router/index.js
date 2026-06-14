@@ -6,7 +6,25 @@ const router = createRouter({
     { path: '/', name: 'homepage', component: () => import('@/views/homepage/HomepageIndex.vue'), meta: { requiresAuth: false } },
     { path: '/friend', name: 'friend', component: () => import('@/views/friend/FriendIndex.vue'), meta: { requiresAuth: true } },
     { path: '/create', name: 'create', component: () => import('@/views/create/character/CreateCharacter.vue'), meta: { requiresAuth: true } },
-    { path: '/update', name: 'update', component: () => import('@/views/create/character/UpdateCharacter.vue'), meta: { requiresAuth: true } },
+    { 
+      path: '/update/:character_id', 
+      name: 'update-character', 
+      component: () => import('@/views/create/character/UpdateCharacter.vue'), 
+      meta: { requiresAuth: true },
+      beforeEnter: async (to, from, next) => {
+        try {
+          const api = (await import('@/js/http/api.js')).default;
+          const res = await api.get(`/api/create/character/get_single/?character_id=${to.params.character_id}`);
+          if (res.data && res.data.result === true) {
+            next();
+          } else {
+            next('/404');
+          }
+        } catch(e) {
+          next('/404');
+        }
+      }
+    },
     { path: '/profile', name: 'profile', component: () => import('@/views/user/profile/ProfileIndex.vue'), meta: { requiresAuth: true } },
     { path: '/login', name: 'login', component: () => import('@/views/user/account/LoginIndex.vue'), meta: { requiresAuth: false } },
     { path: '/register', name: 'register', component: () => import('@/views/user/account/RegisterIndex.vue'), meta: { requiresAuth: false } },

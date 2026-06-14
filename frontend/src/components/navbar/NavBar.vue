@@ -121,7 +121,7 @@ onMounted(() => {
                             <Create />
                             <span class="font-semibold">Create</span>
                         </RouterLink>
-                        <RouterLink :to="{ name: 'update' }"
+                        <RouterLink :to="{ name: 'update-character', params: { character_id: 1 } }"
                             class="btn btn-ghost rounded-full hover:text-primary transition-transform tooltip tooltip-bottom mr-2"
                             data-tip="Update Character" exact-active-class="btn-active text-primary">
                             <!-- A sleek pencil edit icon -->
