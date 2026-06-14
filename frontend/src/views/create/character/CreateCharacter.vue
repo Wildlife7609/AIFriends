@@ -21,7 +21,7 @@ const bgRef = useTemplateRef('bgRef')
 
 // Data-driven state for textual fields
 const character = ref({
-    is_public: false
+    is_public: true
 })
 
 // Loading & Toast State
