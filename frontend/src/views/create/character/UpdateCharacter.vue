@@ -16,16 +16,12 @@ import IsPublic from './components/IsPublic.vue'
 const router = useRouter()
 const route = useRoute()
 
-// Refs to grab data from child components
+// Refs to grab data from child components (File uploads only)
 const photoRef = useTemplateRef('photoRef')
 const bgRef = useTemplateRef('bgRef')
-const nameRef = useTemplateRef('nameRef')
-const profileRef = useTemplateRef('profileRef')
-const promptRef = useTemplateRef('promptRef')
-const greetingRef = useTemplateRef('greetingRef')
-const tagsRef = useTemplateRef('tagsRef')
-const voiceRef = useTemplateRef('voiceRef')
-const isPublicRef = useTemplateRef('isPublicRef')
+
+// Data-driven state for textual fields
+const character = ref({})
 
 // Loading & Toast State
 const isFetching = ref(true)
@@ -57,21 +53,19 @@ onMounted(async () => {
         router.push('/404')
         return
     }
-    
+
     try {
-        const res = await api.get(`/api/create/character/get_single/?character_id=${characterId.value}`)
+        const res = await api.get('/api/create/character/get_single/', {
+            params: {
+                character_id: characterId.value
+            }
+        })
         const data = res.data
 
         if (data.result === true) {
             const charData = data.data
-            // Pre-fill all fields
-            if (nameRef.value) nameRef.value.name = charData.name
-            if (profileRef.value) profileRef.value.profile = charData.profile
-            if (promptRef.value) promptRef.value.prompt = charData.prompt
-            if (greetingRef.value) greetingRef.value.greeting = charData.greeting
-            if (tagsRef.value) tagsRef.value.tags = charData.tags
-            if (voiceRef.value) voiceRef.value.voiceId = charData.voice_id
-            if (isPublicRef.value) isPublicRef.value.isPublic = charData.is_public
+            // Pre-fill all fields beautifully using data-driven approach
+            character.value = charData
 
             // Photos
             initialPhoto.value = charData.photo
@@ -93,13 +87,7 @@ const submitCharacter = async () => {
     try {
         isSubmitting.value = true
 
-        const name = nameRef.value?.name
-        const profile = profileRef.value?.profile
-        const prompt = promptRef.value?.prompt
-        const greeting = greetingRef.value?.greeting
-        const tags = tagsRef.value?.tags
-        const voiceId = voiceRef.value?.voiceId
-        const isPublic = isPublicRef.value?.isPublic
+        const { name, profile, prompt, greeting, tags, voice_id: voiceId, is_public: isPublic } = character.value
 
         const photoFile = photoRef.value?.getUploadFile()
         const bgFile = bgRef.value?.getUploadFile()
@@ -113,21 +101,25 @@ const submitCharacter = async () => {
             showToast('Profile Description is required', false)
             return
         }
+        if (!photoFile && !initialPhoto.value) {
+            showToast('Photo is required', false)
+            return
+        }
 
         const formData = new FormData()
         formData.append('character_id', characterId.value)
         formData.append('name', name)
         formData.append('profile', profile)
-        
+
         // Only append files if they selected new ones
         if (photoFile) formData.append('photo', photoFile)
         if (bgFile) formData.append('background_image', bgFile)
-        
-        if (prompt !== undefined && prompt !== null) formData.append('prompt', prompt)
-        if (greeting !== undefined && greeting !== null) formData.append('greeting', greeting)
-        if (tags !== undefined && tags !== null) formData.append('tags', tags)
-        if (voiceId !== undefined && voiceId !== null) formData.append('voice_id', voiceId)
-        
+
+        if (prompt) formData.append('prompt', prompt)
+        if (greeting) formData.append('greeting', greeting)
+        if (tags) formData.append('tags', tags)
+        if (voiceId) formData.append('voice_id', voiceId)
+
         formData.append('is_public', isPublic ? 'true' : 'false')
 
         const res = await api.post('/api/create/character/update/', formData)
@@ -160,61 +152,67 @@ const submitCharacter = async () => {
             <div class="skeleton h-4 w-full"></div>
         </div>
 
-        <div v-show="!isFetching" class="card bg-base-100 shadow-2xl shadow-base-300/50 w-full max-w-5xl border border-base-200/60 mt-4 sm:mt-8 transition-shadow">
-            
+        <div v-show="!isFetching"
+            class="card bg-base-100 shadow-2xl shadow-base-300/50 w-full max-w-5xl border border-base-200/60 mt-4 sm:mt-8 transition-shadow">
+
             <div class="card-body p-6 sm:p-10">
                 <div class="border-b border-base-200 pb-4 mb-8">
-                    <h2 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+                    <h2
+                        class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
                         Update AI Character
                     </h2>
                     <p class="text-base-content/60 mt-1">Modify your AI companion's personality and appearance.</p>
                 </div>
 
                 <div class="flex flex-col lg:flex-row gap-10">
-                    
+
                     <!-- Left Column: Visuals -->
                     <div class="flex flex-col gap-6 lg:w-1/3">
                         <div class="text-center font-bold text-lg border-b border-base-200 pb-2">Appearance</div>
                         <div class="flex flex-col items-center">
-                            <label class="label w-full"><span class="label-text font-bold">Avatar Photo <span class="text-error">*</span></span></label>
+                            <label class="label w-full"><span class="label-text font-bold">Avatar Photo <span
+                                        class="text-error">*</span></span></label>
                             <Photo ref="photoRef" :photo="initialPhoto"></Photo>
                         </div>
                         <BackgroundImage ref="bgRef"></BackgroundImage>
-                        <IsPublic ref="isPublicRef"></IsPublic>
+                        <IsPublic v-model="character.is_public"></IsPublic>
                     </div>
 
                     <!-- Right Column: Details -->
                     <div class="flex flex-col gap-6 lg:w-2/3">
-                        <div class="text-center font-bold text-lg border-b border-base-200 pb-2">Identity & Personality</div>
-                        
-                        <Name ref="nameRef"></Name>
-                        <Profile ref="profileRef"></Profile>
-                        
+                        <div class="text-center font-bold text-lg border-b border-base-200 pb-2">Identity & Personality
+                        </div>
+
+                        <Name v-model="character.name"></Name>
+                        <Profile v-model="character.profile"></Profile>
+
                         <!-- Advanced Settings (Unfolded & Beautiful) -->
                         <div class="mt-4 pt-6 border-t border-base-200">
                             <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                                        clip-rule="evenodd" />
                                 </svg>
                                 Advanced Configuration
                             </h3>
-                            <div class="bg-base-200/40 rounded-2xl p-6 flex flex-col gap-5 border border-base-200 shadow-sm">
-                                <Prompt ref="promptRef"></Prompt>
-                                <Greeting ref="greetingRef"></Greeting>
+                            <div
+                                class="bg-base-200/40 rounded-2xl p-6 flex flex-col gap-5 border border-base-200 shadow-sm">
+                                <Prompt v-model="character.prompt"></Prompt>
+                                <Greeting v-model="character.greeting"></Greeting>
                                 <div class="flex flex-col sm:flex-row gap-5">
-                                    <Tags ref="tagsRef" class="flex-1"></Tags>
-                                    <VoiceId ref="voiceRef" class="flex-1"></VoiceId>
+                                    <Tags v-model="character.tags" class="flex-1"></Tags>
+                                    <VoiceId v-model="character.voice_id" class="flex-1"></VoiceId>
                                 </div>
                             </div>
                         </div>
 
                         <div class="card-actions justify-end mt-6 pt-6 border-t border-base-200">
-                            <button @click="$router.push('/')" class="btn btn-ghost hover:bg-base-200 transition-transform">Cancel</button>
-                            <button 
-                                @click="submitCharacter" 
-                                :disabled="isSubmitting"
-                                class="btn btn-primary px-8 shadow-lg shadow-primary/30 hover:scale-[1.02] transition-transform"
-                            >
+                            <button @click="$router.push('/')"
+                                class="btn btn-ghost hover:bg-base-200 transition-transform">Cancel</button>
+                            <button @click="submitCharacter" :disabled="isSubmitting"
+                                class="btn btn-primary px-8 shadow-lg shadow-primary/30 hover:scale-[1.02] transition-transform">
                                 <span v-if="isSubmitting" class="loading loading-spinner loading-sm"></span>
                                 Save Changes
                             </button>

@@ -15,16 +15,14 @@ import IsPublic from './components/IsPublic.vue'
 
 const router = useRouter()
 
-// Refs to grab data from child components
+// Refs to grab data from child components (File uploads only)
 const photoRef = useTemplateRef('photoRef')
 const bgRef = useTemplateRef('bgRef')
-const nameRef = useTemplateRef('nameRef')
-const profileRef = useTemplateRef('profileRef')
-const promptRef = useTemplateRef('promptRef')
-const greetingRef = useTemplateRef('greetingRef')
-const tagsRef = useTemplateRef('tagsRef')
-const voiceRef = useTemplateRef('voiceRef')
-const isPublicRef = useTemplateRef('isPublicRef')
+
+// Data-driven state for textual fields
+const character = ref({
+    is_public: false
+})
 
 // Loading & Toast State
 const isSubmitting = ref(false)
@@ -49,13 +47,7 @@ const submitCharacter = async () => {
     try {
         isSubmitting.value = true
 
-        const name = nameRef.value?.name
-        const profile = profileRef.value?.profile
-        const prompt = promptRef.value?.prompt
-        const greeting = greetingRef.value?.greeting
-        const tags = tagsRef.value?.tags
-        const voiceId = voiceRef.value?.voiceId
-        const isPublic = isPublicRef.value?.isPublic
+        const { name, profile, prompt, greeting, tags, voice_id: voiceId, is_public: isPublic } = character.value
 
         const photoFile = photoRef.value?.getUploadFile()
         const bgFile = bgRef.value?.getUploadFile()
@@ -132,15 +124,15 @@ const submitCharacter = async () => {
                             <Photo ref="photoRef"></Photo>
                         </div>
                         <BackgroundImage ref="bgRef"></BackgroundImage>
-                        <IsPublic ref="isPublicRef"></IsPublic>
+                        <IsPublic v-model="character.is_public"></IsPublic>
                     </div>
 
                     <!-- Right Column: Details -->
                     <div class="flex flex-col gap-6 lg:w-2/3">
                         <div class="text-center font-bold text-lg border-b border-base-200 pb-2">Identity & Personality</div>
                         
-                        <Name ref="nameRef"></Name>
-                        <Profile ref="profileRef"></Profile>
+                        <Name v-model="character.name"></Name>
+                        <Profile v-model="character.profile"></Profile>
                         
                         <!-- Advanced Settings (Unfolded & Beautiful) -->
                         <div class="mt-4 pt-6 border-t border-base-200">
@@ -151,11 +143,11 @@ const submitCharacter = async () => {
                                 Advanced Configuration
                             </h3>
                             <div class="bg-base-200/40 rounded-2xl p-6 flex flex-col gap-5 border border-base-200 shadow-sm">
-                                <Prompt ref="promptRef"></Prompt>
-                                <Greeting ref="greetingRef"></Greeting>
+                                <Prompt v-model="character.prompt"></Prompt>
+                                <Greeting v-model="character.greeting"></Greeting>
                                 <div class="flex flex-col sm:flex-row gap-5">
-                                    <Tags ref="tagsRef" class="flex-1"></Tags>
-                                    <VoiceId ref="voiceRef" class="flex-1"></VoiceId>
+                                    <Tags v-model="character.tags" class="flex-1"></Tags>
+                                    <VoiceId v-model="character.voice_id" class="flex-1"></VoiceId>
                                 </div>
                             </div>
                         </div>

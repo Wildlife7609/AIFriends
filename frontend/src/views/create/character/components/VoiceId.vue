@@ -1,11 +1,5 @@
 <script setup>
-import { ref } from 'vue'
-
-const voiceId = ref('')
-
-defineExpose({
-    voiceId
-})
+const modelValue = defineModel()
 </script>
 
 <template>
@@ -14,7 +8,7 @@ defineExpose({
             <span class="label-text font-bold">Voice ID</span>
             <span class="label-text-alt text-base-content/60">Optional</span>
         </label>
-        <input v-model="voiceId" type="text" placeholder="e.g. 21m00Tcm4TlvDq8ikWAM" class="input input-bordered w-full focus:input-primary transition-colors" />
+        <input v-model="modelValue" type="text" placeholder="e.g. 21m00Tcm4TlvDq8ikWAM" class="input input-bordered w-full focus:input-primary transition-colors" />
     </div>
 </template>
 

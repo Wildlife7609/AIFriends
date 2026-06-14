@@ -1,12 +1,5 @@
 <script setup>
-import { ref } from 'vue'
-
-const profile = ref('')
-
-// Expose the ref so the parent component can access the value directly
-defineExpose({
-    profile
-})
+const modelValue = defineModel()
 </script>
 
 <template>
@@ -14,7 +7,7 @@ defineExpose({
         <label class="label mb-2">
             <span class="label-text font-bold">Public Profile / Description <span class="text-error">*</span></span>
         </label>
-        <textarea v-model="profile" class="textarea textarea-bordered w-full h-32 rounded-xl focus:textarea-primary transition-colors" placeholder="Describe the character's public persona..."></textarea>
+        <textarea v-model="modelValue" class="textarea textarea-bordered w-full h-32 rounded-xl focus:textarea-primary transition-colors" placeholder="Describe the character's public persona..."></textarea>
     </div>
 </template>
 

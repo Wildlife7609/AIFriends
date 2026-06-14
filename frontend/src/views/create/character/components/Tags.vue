@@ -1,11 +1,5 @@
 <script setup>
-import { ref } from 'vue'
-
-const tags = ref('')
-
-defineExpose({
-    tags
-})
+const modelValue = defineModel()
 </script>
 
 <template>
@@ -14,7 +8,7 @@ defineExpose({
             <span class="label-text font-bold">Tags</span>
             <span class="label-text-alt text-base-content/60">Optional</span>
         </label>
-        <input v-model="tags" type="text" placeholder="e.g. Friendly, Assistant, Helpful" class="input input-bordered w-full focus:input-primary transition-colors" />
+        <input v-model="modelValue" type="text" placeholder="e.g. Friendly, Assistant, Helpful" class="input input-bordered w-full focus:input-primary transition-colors" />
     </div>
 </template>
 
