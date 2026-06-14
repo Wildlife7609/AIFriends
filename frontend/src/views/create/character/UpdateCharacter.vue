@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, useTemplateRef } from 'vue'
+import { ref, onMounted, onBeforeUnmount, useTemplateRef } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import api from '@/js/http/api.js'
 
@@ -15,6 +15,18 @@ import IsPublic from './components/IsPublic.vue'
 
 const router = useRouter()
 const route = useRoute()
+
+// Track active timeouts to prevent memory leaks
+const activeTimeouts = []
+const safeSetTimeout = (fn, delay) => {
+    const id = setTimeout(fn, delay)
+    activeTimeouts.push(id)
+    return id
+}
+
+onBeforeUnmount(() => {
+    activeTimeouts.forEach(clearTimeout)
+})
 
 // Refs to grab data from child components (File uploads only)
 const photoRef = useTemplateRef('photoRef')
@@ -40,11 +52,11 @@ const showToast = (msg, isSuccess = true) => {
     if (isSuccess) {
         showSuccessToast.value = true
         showErrorToast.value = false
-        setTimeout(() => showSuccessToast.value = false, 2000)
+        safeSetTimeout(() => showSuccessToast.value = false, 2000)
     } else {
         showErrorToast.value = true
         showSuccessToast.value = false
-        setTimeout(() => showErrorToast.value = false, 3000)
+        safeSetTimeout(() => showErrorToast.value = false, 3000)
     }
 }
 
@@ -73,11 +85,11 @@ onMounted(async () => {
             if (bgRef.value) bgRef.value.previewUrl = charData.background_image
         } else {
             showToast(data.msg || 'Failed to fetch character', false)
-            setTimeout(() => router.push('/404'), 1500)
+            safeSetTimeout(() => router.push('/404'), 1500)
         }
     } catch (error) {
         showToast(error.message || 'An error occurred fetching character', false)
-        setTimeout(() => router.push('/404'), 1500)
+        safeSetTimeout(() => router.push('/404'), 1500)
     } finally {
         isFetching.value = false
     }
@@ -128,7 +140,7 @@ const submitCharacter = async () => {
         if (data.result === true) {
             showToast('Character updated successfully!', true)
             // Redirect after success (e.g., to dashboard)
-            setTimeout(() => {
+            safeSetTimeout(() => {
                 router.push('/')
             }, 1000)
         } else {

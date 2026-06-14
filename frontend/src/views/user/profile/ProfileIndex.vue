@@ -5,7 +5,19 @@ import Profile from './components/Profile.vue';
 import { useUserStore } from '@/stores/user'
 import api from '@/js/http/api.js'
 import { useTemplateRef } from 'vue';
-import { ref } from 'vue';
+import { ref, onBeforeUnmount } from 'vue';
+
+// Track active timeouts to prevent memory leaks
+const activeTimeouts = []
+const safeSetTimeout = (fn, delay) => {
+    const id = setTimeout(fn, delay)
+    activeTimeouts.push(id)
+    return id
+}
+
+onBeforeUnmount(() => {
+    activeTimeouts.forEach(clearTimeout)
+})
 
 const user = useUserStore()
 const photoRef = useTemplateRef('photoRef')
@@ -23,11 +35,11 @@ const showToast = (msg, isSuccess = true) => {
     if (isSuccess) {
         showSuccessToast.value = true
         showErrorToast.value = false
-        setTimeout(() => showSuccessToast.value = false, 2000)
+        safeSetTimeout(() => showSuccessToast.value = false, 2000)
     } else {
         showErrorToast.value = true
         showSuccessToast.value = false
-        setTimeout(() => showErrorToast.value = false, 2000)
+        safeSetTimeout(() => showErrorToast.value = false, 2000)
     }
 }
 

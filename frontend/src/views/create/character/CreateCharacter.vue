@@ -1,5 +1,5 @@
 <script setup>
-import { ref, useTemplateRef } from 'vue'
+import { ref, onBeforeUnmount, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/js/http/api.js'
 
@@ -14,6 +14,18 @@ import VoiceId from './components/VoiceId.vue'
 import IsPublic from './components/IsPublic.vue'
 
 const router = useRouter()
+
+// Track active timeouts to prevent memory leaks
+const activeTimeouts = []
+const safeSetTimeout = (fn, delay) => {
+    const id = setTimeout(fn, delay)
+    activeTimeouts.push(id)
+    return id
+}
+
+onBeforeUnmount(() => {
+    activeTimeouts.forEach(clearTimeout)
+})
 
 // Refs to grab data from child components (File uploads only)
 const photoRef = useTemplateRef('photoRef')
@@ -35,11 +47,11 @@ const showToast = (msg, isSuccess = true) => {
     if (isSuccess) {
         showSuccessToast.value = true
         showErrorToast.value = false
-        setTimeout(() => showSuccessToast.value = false, 2000)
+        safeSetTimeout(() => showSuccessToast.value = false, 2000)
     } else {
         showErrorToast.value = true
         showSuccessToast.value = false
-        setTimeout(() => showErrorToast.value = false, 3000)
+        safeSetTimeout(() => showErrorToast.value = false, 3000)
     }
 }
 
@@ -88,7 +100,7 @@ const submitCharacter = async () => {
         if (data.result === true) {
             showToast('Character created successfully!', true)
             // Redirect after success (e.g., to dashboard)
-            setTimeout(() => {
+            safeSetTimeout(() => {
                 router.push('/')
             }, 1000)
         } else {
