@@ -10,6 +10,7 @@ from web.views.user.profile.update import UpdateProfileView
 from web.views.create.character.create import CharacterCreateView
 from web.views.create.character.update import CharacterUpdateView
 from web.views.create.character.get_single import CharacterGetSingleView
+from web.views.create.character.get_list import CharacterGetListView
 from web.views.create.character.remove import CharacterRemoveView
 
 urlpatterns = [
@@ -24,6 +25,7 @@ urlpatterns = [
     path('api/create/character/create/', CharacterCreateView.as_view(), name='character_create'),
     path('api/create/character/update/', CharacterUpdateView.as_view(), name='character_update'),
     path('api/create/character/get_single/', CharacterGetSingleView.as_view(), name='character_get_single'),
+    path('api/create/character/get_list/', CharacterGetListView.as_view(), name='character_get_list'),
     path('api/create/character/remove/', CharacterRemoveView.as_view(), name='character_remove'),
     
     path('', index, name='index'),

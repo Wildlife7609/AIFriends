@@ -28,7 +28,7 @@ const router = createRouter({
     { path: '/profile', name: 'profile', component: () => import('@/views/user/profile/ProfileIndex.vue'), meta: { requiresAuth: true } },
     { path: '/login', name: 'login', component: () => import('@/views/user/account/LoginIndex.vue'), meta: { requiresAuth: false } },
     { path: '/register', name: 'register', component: () => import('@/views/user/account/RegisterIndex.vue'), meta: { requiresAuth: false } },
-    { path: '/space/:user_id', name: 'user-space', component: () => import('@/views/user/space/SpaceIndex.vue'), meta: { requiresAuth: true } },
+    { path: '/space/:user_id', name: 'user-space', component: () => import('@/views/user/space/SpaceIndex.vue'), meta: { requiresAuth: false } },
     { path: '/404', name: '404', component: () => import('@/views/error/NotFoundIndex.vue'), meta: { requiresAuth: false } },
     { path: '/:pathMatch(.*)*', redirect: '/404', meta: { requiresAuth: false } },
   ],
